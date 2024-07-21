@@ -1,43 +1,56 @@
 import { Article } from "../interfaces/article";
 import { Educator } from "../interfaces/user";
 
-export const Educator1: Educator = {
-    name: "Josias Abraão",
-    email: "josias.leal@ccc.ufcg.edu.br",
-    contentsPosted: 1,
-    field: "Development"
+export const educator1: Educator = {
+  id: 1,  
+  name: "Josias Abraão",
+  email: "josias.leal@ccc.ufcg.edu.br",
+  contentsPosted: 1,
+  field: "Development"
 }
 
-export const Educator2: Educator = {
-    name: "John Doe",
-    email: "john.doe@ccc.ufcg.edu.br",
-    contentsPosted: 1,
-    field: "Marketing"
+export const educator2: Educator = {
+  id: 2,
+  name: "John Doe",
+  email: "john.doe@ccc.ufcg.edu.br",
+  contentsPosted: 1,
+  field: "Marketing"
 }
 
-export const ArticlesMock: Article[] = [
+export const educatorsMock: Educator[] = [educator1, educator2];
+
+export const articlesMock: Article[] = [
     {
         id: 1,
         title: "Desenvolvimento Web Josias 1",
         article: "O desenvolvimento web é uma área da programção que tem crescido bastante...",
-        author: Educator1
+        author: educator1
     },
     {
         id: 2,
         title: "Desenvolvimento Web Josias 2",
         article: "O desenvolvimento web é uma área da programção que tem crescido bastante...",
-        author: Educator1
+        author: educator1
     },
     {
         id: 3,
         title: "Desenvolvimento Web John 1",
         article: "O desenvolvimento web é uma área da programção que tem crescido bastante...",
-        author: Educator2
+        author: educator2
     },
     {
         id: 4,
         title: "Desenvolvimento Web John 2",
         article: "O desenvolvimento web é uma área da programção que tem crescido bastante...",
-        author: Educator2
+        author: educator2
     }
 ]
+
+export const getEducatorById = (educatorId: number) => {
+  const educator = educatorsMock.find(edu => edu.id === educatorId);
+  if (!educator) {
+    throw new Error(`Educator not found with id ${educatorId}`);
+  }
+
+  return educator;
+}

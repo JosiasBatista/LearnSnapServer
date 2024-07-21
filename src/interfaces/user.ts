@@ -1,13 +1,14 @@
 export interface User {
-    name: string,
-    email: string
+  id: number,
+  name: string,
+  email: string
 }
 
 export interface Educator extends User {
-    contentsPosted: number,
-    field: string
+  contentsPosted: number,
+  field: string
 }
 
 export interface Learner extends User {
-    areasOfInterests: string[]
+  areasOfInterests: string[]
 }
