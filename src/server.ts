@@ -1,6 +1,7 @@
 import express, { Request, Response } from 'express';
-import { articlesMock, educatorsMock, getEducatorById } from './mock';
+import { articlesMock, educatorsMock } from './mock';
 import { Article, ArticleRequest } from './interfaces/article';
+import { getEducatorById, getArticleById } from './services';
 
 const app = express();
 const port = 3000;
@@ -9,14 +10,20 @@ app.use(express.json());
 
 app.get('/article/:id', (req: Request, res: Response) => {
   const id = Number(req.params.id);
-  const article = articlesMock.find(article => article.id === id);
 
-  if (!article) {
-    res.status(400).send(`Article not found with id ${id}`);
+  try {
+    const article: Article = getArticleById(id);
+
+    res.status(200).send(article);
+  } catch (e) {
+    if (e instanceof Error) {
+      res.status(400).send(e.message);
+    } else {
+      res.status(400).send('There is an error in your request');
+    }
+
     return;
   }
-
-  res.status(200).send(article);
 })
 
 app.post('/article', (req: Request, res: Response) => {

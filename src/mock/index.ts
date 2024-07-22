@@ -45,12 +45,3 @@ export const articlesMock: Article[] = [
         author: educator2
     }
 ]
-
-export const getEducatorById = (educatorId: number) => {
-  const educator = educatorsMock.find(edu => edu.id === educatorId);
-  if (!educator) {
-    throw new Error(`Educator not found with id ${educatorId}`);
-  }
-
-  return educator;
-}
