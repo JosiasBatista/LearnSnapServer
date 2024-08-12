@@ -1,0 +1,84 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id             Int      @id @default(autoincrement())
+  name           String
+  email          String   @unique
+  password       String
+  type           UserType
+  field          String?
+  contentsPosted Int?
+  createdAt      DateTime @default(now())
+
+  areasOfInterest AreasOfInterest[]
+  Content         Content[]
+}
+
+model AreasOfInterest {
+  userId Int
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  areaId Int
+  area   Area @relation(fields: [areaId], references: [id], onDelete: Cascade)
+
+  @@id([userId, areaId])
+}
+
+model Area {
+  id          Int    @id @default(autoincrement())
+  description String
+
+  areasOfInterest AreasOfInterest[]
+}
+
+model Content {
+  id        Int      @id @default(autoincrement())
+  authorId  Int
+  author    User     @relation(fields: [authorId], references: [id])
+  createdAt DateTime @default(now())
+
+  Article Article[]
+
+  Quote Quote[]
+
+  Quizz Quizz[]
+}
+
+model Article {
+  contentId Int     @id @unique
+  content   Content @relation(fields: [contentId], references: [id], onDelete: Cascade)
+  title     String
+  article   String
+}
+
+model Quote {
+  contentId   Int     @id @unique
+  content     Content @relation(fields: [contentId], references: [id], onDelete: Cascade)
+  description String
+  quoteAuthor String
+}
+
+model Quizz {
+  contentId    Int      @id @unique
+  content      Content  @relation(fields: [contentId], references: [id], onDelete: Cascade)
+  question     String
+  options      String[]
+  correctAswer String
+}
+
+enum UserType {
+  Learner
+  Educator
+}
