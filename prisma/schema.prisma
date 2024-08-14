@@ -25,12 +25,10 @@ model User {
 
   areasOfInterest AreasOfInterest[]
   Content         Content[]
-
-  QuizzAnswer QuizzAnswer[]
-
-  Like Like[]
-
-  Comment Comment[]
+  refreshTokens   RefreshToken[]
+  QuizzAnswer     QuizzAnswer[]
+  Like            Like[]
+  Comment         Comment[]
 }
 
 model AreasOfInterest {
@@ -91,7 +89,7 @@ model Quizz {
 }
 
 model QuizzAnswer {
-  id        Int     @id @default(autoincrement())
+  id        Int     @id @unique @default(autoincrement())
   isCorrect Boolean
   userId    Int
   user      User    @relation(fields: [userId], references: [id])
@@ -100,7 +98,7 @@ model QuizzAnswer {
 }
 
 model Like {
-  id        Int     @id @default(autoincrement())
+  id        Int     @id @unique @default(autoincrement())
   contentId Int
   content   Content @relation(fields: [contentId], references: [id])
   userId    Int
@@ -108,12 +106,22 @@ model Like {
 }
 
 model Comment {
-  id        Int     @id @default(autoincrement())
+  id        Int     @id @unique @default(autoincrement())
   value     String
   contentId Int
   content   Content @relation(fields: [contentId], references: [id])
   userId    Int
   user      User    @relation(fields: [userId], references: [id])
+}
+
+model RefreshToken {
+  id          String    @id @unique @default(autoincrement())
+  hashedToken String
+  userId      String
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  revoked     Boolean   @default(false)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
 }
 
 enum UserType {

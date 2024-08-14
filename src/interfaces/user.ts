@@ -1,14 +1,15 @@
-export interface User {
+export interface UserResponse {
   id: number,
   name: string,
-  email: string
+  email: string,
+  createdAt: string
 }
 
-export interface Educator extends User {
+export interface Educator extends UserResponse {
   contentsPosted: number,
   field: string
 }
 
-export interface Learner extends User {
+export interface Learner extends UserResponse {
   areasOfInterests: string[]
 }
