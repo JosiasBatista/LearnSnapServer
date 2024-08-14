@@ -1,7 +1,8 @@
 import express, { Request, Response } from 'express';
-import { articlesMock, educatorsMock } from './mock';
+import { articlesMock } from './mock';
 import { Article, ArticleRequest } from './interfaces/article';
 import { getEducatorById, getArticleById } from './services';
+import userRoutes from './routes/userRoutes';
 
 const app = express();
 const port = 3000;
@@ -92,9 +93,7 @@ app.delete('/article/:id', (req: Request, res: Response) => {
   res.sendStatus(204);
 })
 
-app.get('/', (req: Request, res: Response) => {
-  res.send('Hello, world!')
-});
+app.use("/", userRoutes);
 
 app.listen(port, () => {
   console.log(`Servidor rodando em http://localhost:${port}`)

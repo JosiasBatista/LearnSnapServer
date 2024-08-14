@@ -1,19 +1,16 @@
-version: '3'
-
+version: '3.8'
 services:
-  db:
-    image: postgres
-    container_name: ${POSTGRES_DATABASE_NAME}
+  postgres:
+    image: postgres:16
+    container_name: postgres_container
     restart: always
-    volumes:
-      - pgdata:/var/lib/postgresql/data
     environment:
-      POSTGRES_PASSWORD: ${POSTGRES_DATABSE_PASS}
+      POSTGRES_PASSWORD: ${POSTGRESS_PASSWORD}
+      POSTGRES_DB: learn_snap
     ports:
-      - 5432:5432
-    logging:
-      driver: json-file
-      options:
-        max-size: 100m
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
 volumes:
-pgdata:
+  postgres_data:

@@ -25,13 +25,19 @@ model User {
 
   areasOfInterest AreasOfInterest[]
   Content         Content[]
+
+  QuizzAnswer QuizzAnswer[]
+
+  Like Like[]
+
+  Comment Comment[]
 }
 
 model AreasOfInterest {
   userId Int
-  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user   User @relation(fields: [userId], references: [id])
   areaId Int
-  area   Area @relation(fields: [areaId], references: [id], onDelete: Cascade)
+  area   Area @relation(fields: [areaId], references: [id])
 
   @@id([userId, areaId])
 }
@@ -54,6 +60,10 @@ model Content {
   Quote Quote[]
 
   Quizz Quizz[]
+
+  Like Like[]
+
+  Comment Comment[]
 }
 
 model Article {
@@ -76,6 +86,34 @@ model Quizz {
   question     String
   options      String[]
   correctAswer String
+
+  QuizzAnswer QuizzAnswer[]
+}
+
+model QuizzAnswer {
+  id        Int     @id @default(autoincrement())
+  isCorrect Boolean
+  userId    Int
+  user      User    @relation(fields: [userId], references: [id])
+  quizzId   Int
+  quizz     Quizz   @relation(fields: [quizzId], references: [contentId])
+}
+
+model Like {
+  id        Int     @id @default(autoincrement())
+  contentId Int
+  content   Content @relation(fields: [contentId], references: [id])
+  userId    Int
+  user      User    @relation(fields: [userId], references: [id])
+}
+
+model Comment {
+  id        Int     @id @default(autoincrement())
+  value     String
+  contentId Int
+  content   Content @relation(fields: [contentId], references: [id])
+  userId    Int
+  user      User    @relation(fields: [userId], references: [id])
 }
 
 enum UserType {
