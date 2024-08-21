@@ -10,3 +10,7 @@ export const createUser = async (userData: User): Promise<User> => {
   }
   return await userModel.createUser(userData);
 }
+
+export const findUserByEmail = async (email: string): Promise<User> => {
+  return await userModel.findUserByEmail(email);
+}

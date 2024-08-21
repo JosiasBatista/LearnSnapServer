@@ -1,0 +1,145 @@
+openapi: 3.0.0
+servers: []
+info:
+  version: "1.0.0"
+  title: LearnSnap
+  description: The API for learning in a simple snap
+paths:
+  /register:
+    post:
+      tags:
+        - Authentication
+      description: Make user registration
+      operationId: register
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/registerUser'
+      responses:
+        '201':
+          description: All the devices
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  accessToken:
+                    type: string
+                    format: token
+                    example: 'access_token_string'
+                  refreshToken:
+                    type: string
+                    format: token
+                    example: 'refresh_token_string'
+        '400':
+          description: Missing informations
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    format: message
+                    example: 'Informações incompletas para criação de usuário'
+        '500':
+          description: Internal error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    format: message
+                    example: 'Erro ao registrar: Detalhamento do erro'
+  /login:
+    post:
+      tags:
+        - Authentication
+      operationId: login
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/loginUser'
+      responses:
+        '200':
+          description: response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  accessToken:
+                    type: string
+                    format: token
+                    example: 'access_token_string'
+                  refreshToken:
+                    type: string
+                    format: token
+                    example: 'refresh_token_string'
+        '403':
+          description: Incorrect informations
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    format: message
+                    example: 'Informações de login inválidas'
+        '500':
+          description: Internal error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    format: message
+                    example: 'Erro ao realizar login: Detalhamento do erro'
+                    
+components:
+  schemas:
+    registerUser:
+      type: object
+      properties:
+        name: 
+          type: string
+          format: string
+          example: 'Nome do usuário'
+        email: 
+          type: string
+          format: string
+          example: 'email@gmail.com'
+        password:
+          type: string
+          format: string
+          example: 'iio23DWQ0'
+        passwordConfirm:
+          type: string
+          format: string
+          example: 'iio23DWQ0'
+        type:
+          type: string
+          format: string
+          example: 'LEARNER | EDUCATOR'
+    loginUser:
+      type: object
+      properties:
+        email: 
+          type: string
+          format: string
+          example: 'email@gmail.com'
+        password:
+          type: string
+          format: string
+          example: 'iio23DWQ0'
+        
+      
