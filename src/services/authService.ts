@@ -26,11 +26,14 @@ export const authenticateUser = async (requestBody: LoginReq) => {
     throw new Error(JSON.stringify({ status: 400, message: "Informações incompletas"}));
   }
 
-  const user: User = userService.findUserByEmail(requestBody.email);
-  const validatedPassword = validateUserPasswordToLogin(requestBody.password, user);
+  const user: User | null = await userService.findUserByEmail(requestBody.email);
+  if (!user) {
+    throw new Error(JSON.stringify({ status: 400, message: 'Usuário não existente na base' }));
+  }
 
+  const validatedPassword = validateUserPasswordToLogin(requestBody.password, user);
   if (!validatedPassword) {
-    throw new Error(JSON.stringify({ message: 'Informações de login inválidas' }));
+    throw new Error(JSON.stringify({ status: 400, message: 'Informações de login inválidas' }));
   }
 
   const jti = v4();

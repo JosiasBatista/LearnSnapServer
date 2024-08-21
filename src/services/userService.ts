@@ -1,16 +1,28 @@
 import { User } from '@prisma/client';
 
 import * as userModel from '../models/userModel';
+import { RegisterReq } from '../interfaces/user';
 
-export const createUser = async (userData: User): Promise<User> => {
-  const existingUser = await userModel.findUserByEmail(userData.email);
+export const createUser = async (userReq: RegisterReq): Promise<User> => {
+  const existingUser = await userModel.findUserByEmail(userReq.email);
 
   if (existingUser) {
     throw new Error('Email já em uso');
   }
+
+  const userData: Omit<User, "id"> = {
+    ...userReq,
+    contentsPosted: 0,
+    createdAt: new Date(),
+    field: ""
+  }
   return await userModel.createUser(userData);
 }
 
-export const findUserByEmail = async (email: string): Promise<User> => {
-  return await userModel.findUserByEmail(email);
+export const findUserByEmail = async (email: string): Promise<User | null> => {
+  return userModel.findUserByEmail(email);
+}
+
+export const findUserById = async (id: number): Promise<User | null> => {
+  return userModel.findUserById(id);
 }
