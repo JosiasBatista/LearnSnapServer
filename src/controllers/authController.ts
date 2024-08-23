@@ -11,6 +11,7 @@ export const register = async (req: Request, res: Response) => {
       refreshToken
     })
   } catch (error: any) {
+    console.log(error)
     try {
       const errorParsed = JSON.parse(error);
       res.status(errorParsed.status).json(errorParsed.message);

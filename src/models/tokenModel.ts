@@ -1,4 +1,4 @@
-import { prisma } from ".";
+import prisma from ".";
 import { RefreshTokenProps } from "../interfaces/token";
 import { hashToken } from "../utils/hashToken";
 

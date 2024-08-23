@@ -12,9 +12,11 @@
   "description": "",
   "dependencies": {
     "@prisma/client": "^5.18.0",
+    "@types/jsonwebtoken": "^9.0.6",
     "bcrypt": "^5.1.1",
     "express": "^4.19.2",
     "gulp-cli": "^3.0.0",
+    "jsonwebtoken": "^9.0.2",
     "uuid": "^10.0.0"
   },
   "devDependencies": {

@@ -104,9 +104,167 @@ paths:
                     type: string
                     format: message
                     example: 'Erro ao realizar login: Detalhamento do erro'
+  /article:
+    post:
+      tags:
+        - Article
+      operationId: createArticle
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/createArticle'
+      responses:
+        '201':
+          description: response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  contentId:
+                    type: number
+                    format: number
+                    example: 1
+                  article:
+                    type: string
+                    format: string
+                    example: 'Conteúdo do artigo'
+                  title:
+                    type: string
+                    format: string
+                    example: 'Título do artigo'
+        '400':
+          description: Incorrect informations
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    format: message
+                    example: 'Dados incorretos na criação'
+        '500':
+          description: Internal error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    format: message
+                    example: 'Erro ao criar artigo'
+  /article/:id:
+    get:
+      tags:
+        - Article
+      operationId: getArticle
+      parameters:
+        - in: query
+          name: articleId
+          schema:
+            type: integer
+          required: true
+          description: Id do artigo buscado
+      responses:
+        '200':
+          description: response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  contentId:
+                    type: number
+                    format: number
+                    example: 1
+                  article:
+                    type: string
+                    format: string
+                    example: 'Conteúdo do artigo'
+                  title:
+                    type: string
+                    format: string
+                    example: 'Título do artigo'
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    format: message
+                    example: 'Artigo não encontrado na base'
+        '500':
+          description: Internal error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    format: message
+                    example: 'Erro ao buscar artigo: Detalhes do erro'
+    delete:
+      tags:
+        - Article
+      operationId: deleteArticle
+      parameters:
+        - in: query
+          name: articleId
+          schema:
+            type: integer
+          required: true
+          description: Id do artigo para deletar
+      responses:
+        '204':
+          description: No content
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    format: message
+                    example: 'Artigo não encontrado na base'
+        '500':
+          description: Internal error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    format: message
+                    example: 'Erro ao deletar artigo: Detalhes do erro'
                     
 components:
   schemas:
+    createArticle:
+      type: object
+      properties:
+        title:
+          type: string
+          format: string
+          example: 'Título do artigo'
+        article:
+          type: string
+          format: string
+          example: 'Conteúdo do artigo'
+        contentId:
+          type: number
+          format: number
+          example: 1
     registerUser:
       type: object
       properties:
@@ -129,7 +287,7 @@ components:
         type:
           type: string
           format: string
-          example: 'LEARNER | EDUCATOR'
+          example: 'Learner | Educator'
     loginUser:
       type: object
       properties:

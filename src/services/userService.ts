@@ -10,12 +10,15 @@ export const createUser = async (userReq: RegisterReq): Promise<User> => {
     throw new Error('Email já em uso');
   }
 
+  const { passwordConfirm, ...userInfos } = userReq;
+
   const userData: Omit<User, "id"> = {
-    ...userReq,
+    ...userInfos,
     contentsPosted: 0,
     createdAt: new Date(),
     field: ""
   }
+
   return await userModel.createUser(userData);
 }
 

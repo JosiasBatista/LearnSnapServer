@@ -38,6 +38,11 @@ export const authenticateUser = async (requestBody: LoginReq) => {
 
   const jti = v4();
   const { accessToken, refreshToken } = generateTokens(user, jti);
+
+  if (!accessToken || !refreshToken) {
+    throw new Error(JSON.stringify({ status: 500, message: 'Erro ao realizar autenticação' }));
+  }
+  
   await addRefreshTokenToWhiteList({ jti, refreshToken, userId: user.id})
 
   return {
@@ -54,6 +59,11 @@ export const registerUser = async (requestBody: RegisterReq) => {
   const user: User = await userService.createUser(requestBody);
   const jti = v4();
   const { accessToken, refreshToken } = generateTokens(user, jti);
+
+  if (!accessToken || !refreshToken) {
+    throw new Error(JSON.stringify({ status: 500, message: 'Erro ao registrar usuário' }));
+  }
+
   await addRefreshTokenToWhiteList({ jti, refreshToken, userId: user.id})
 
   return {
