@@ -6,7 +6,11 @@ export const generateAccessToken = (user: User) => {
     const jwtAccessSecret = process.env.JWT_ACCESS_SECRET;
 
     if (jwtAccessSecret) {
-        return jwt.sign({ userId: user.id }, jwtAccessSecret, {
+        return jwt.sign({ 
+            userId: user.id,
+            userType: user.type,
+            userName: user.name
+         }, jwtAccessSecret, {
             expiresIn: '5m'
         })
     } else {
