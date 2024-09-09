@@ -1,7 +1,9 @@
 import { User } from '@prisma/client';
+import bcrypt from 'bcrypt';
 
 import * as userModel from '../models/userModel';
 import { RegisterReq } from '../interfaces/user';
+import { CustomError } from '../exceptions/CustomError';
 
 export const createUser = async (userReq: RegisterReq): Promise<User> => {
   const existingUser = await userModel.findUserByEmail(userReq.email);
@@ -12,14 +14,20 @@ export const createUser = async (userReq: RegisterReq): Promise<User> => {
 
   const { passwordConfirm, ...userInfos } = userReq;
 
-  const userData: Omit<User, "id"> = {
-    ...userInfos,
-    contentsPosted: 0,
-    createdAt: new Date(),
-    field: ""
-  }
-
-  return await userModel.createUser(userData);
+  return bcrypt.hash(userInfos.password, 10).then(async (hash) => {
+    const userData: Omit<User, "id"> = {
+      ...userInfos,
+      contentsPosted: 0,
+      createdAt: new Date(),
+      field: "",
+      password: hash
+    }
+  
+    const user = await userModel.createUser(userData);
+    return user;
+  }).catch(() => {
+    throw new CustomError("Erro ao criar usuário", 500);
+  })
 }
 
 export const findUserByEmail = async (email: string): Promise<User | null> => {

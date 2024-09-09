@@ -28,3 +28,7 @@ export interface RegisterReq {
   passwordConfirm: string,
   type: UserType
 }
+
+export interface RefreshReq {
+  refreshToken: string
+}

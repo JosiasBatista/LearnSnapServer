@@ -1,12 +1,13 @@
 import { Article } from '@prisma/client';
 import { Request, Response } from 'express';
+import { CustomRequest } from '../interfaces/commons';
 
 import * as articleService from "../services/articleService";
 import { CustomError } from '../exceptions/CustomError';
 
-export const createArticle = async (req: Request, res: Response) => {
+export const createArticle = async (req: CustomRequest, res: Response) => {
   try {
-    const article: Article = await articleService.createArticle(req.body);
+    const article: Article = await articleService.createArticle(req.body, req.payload);
 
     if (!article) {
       res.status(500).json({ message: "Erro ao criar artigo" })
@@ -38,9 +39,9 @@ export const getArticle = async (req: Request, res: Response) => {
   }
 }
 
-export const deleteArticle = async (req: Request, res: Response) => {
+export const deleteArticle = async (req: CustomRequest, res: Response) => {
   try {
-    await articleService.deleteArticle(parseInt(req.params.id));
+    await articleService.deleteArticle(parseInt(req.params.id), req.payload);
     
     res.status(204).send();
   } catch (error: any) {

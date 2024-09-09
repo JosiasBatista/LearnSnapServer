@@ -1,18 +1,19 @@
 import { Article, Content } from "@prisma/client";
-import { ArticleRequest } from "../interfaces/article";
+import { ArticleRequest } from "../interfaces/content";
 import * as userService from "./userService";
 import * as contentModel from "../models/contentModel";
 import { CustomError } from "../exceptions/CustomError";
+import { JwtPayload } from "jsonwebtoken";
 
-export const createArticle = async (request: ArticleRequest) => {
-  const isReqValid = validateArticleRequest(request)
+export const createArticle = async (request: ArticleRequest, payload: JwtPayload) => {
+  const isReqValid = await validateArticleRequest(request, payload.userId);
 
   if (!isReqValid) {
     throw new CustomError("Dados incorretos na criação", 400);
   }
 
   const contentReq: Omit<Content, "id"> = {
-    authorId: request.educatorId,
+    authorId: payload.userId,
     createdAt: new Date()
   }
   const content = await contentModel.createContent(contentReq);
@@ -33,8 +34,17 @@ export const getArticle = async (articleId: number) => {
   return article;
 }
 
-export const deleteArticle = async (articleId: number) => {
+export const deleteArticle = async (articleId: number, payload: JwtPayload) => {
   try {
+    const article = await contentModel.getArticleById(articleId);
+    
+    if (
+      !article || !article.content || 
+      article.content.authorId !== payload.userId
+    ) {
+      throw new CustomError("Você não tem autorização para deletar esse artigo", 401);
+    }
+
     await contentModel.deleteArticleById(articleId);
 
     return true;
@@ -43,8 +53,8 @@ export const deleteArticle = async (articleId: number) => {
   }
 }
 
-const validateArticleRequest = (req: ArticleRequest) => {
-  const user = userService.findUserById(req.educatorId);
+const validateArticleRequest = async (req: ArticleRequest, userId: number): Promise<boolean> => {
+  const user = await userService.findUserById(userId);
   
-  return (req.article && req.title && user !== null);
+  return !!(req.article && req.title && user !== null);
 }

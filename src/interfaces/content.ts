@@ -12,3 +12,9 @@ export interface ArticleRequest {
   article: string,
   educatorId: number
 }
+
+export interface QuoteRequest {
+  description: string,
+  quoteAuthor: string,
+  userId: number
+}

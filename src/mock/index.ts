@@ -1,4 +1,4 @@
-import { Article } from "../interfaces/article";
+import { Article } from "../interfaces/content";
 import { Educator } from "../interfaces/user";
 
 export const educator1: Educator = {
