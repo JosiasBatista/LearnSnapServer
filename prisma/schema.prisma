@@ -53,11 +53,9 @@ model Content {
   author    User     @relation(fields: [authorId], references: [id])
   createdAt DateTime @default(now())
 
-  Article Article[]
-
-  Quote Quote[]
-
-  Quizz Quizz[]
+  article Article?
+  quote Quote?
+  quizz Quizz?
 
   Like Like[]
 
