@@ -1,4 +1,4 @@
-import { Article, Content, Quote } from '@prisma/client';
+import { Article, Comment, Content, Like, Quizz, QuizzAnswer, Quote } from '@prisma/client';
 import prisma from '.';
 
 export const createContent = async (contentData: Omit<Content, "id">): Promise<Content> => {
@@ -22,6 +22,26 @@ export const createArticle = async (articleData: Article): Promise<Article> => {
 export const createQuote = async (quoteData: Quote): Promise<Quote> => {
   return prisma.quote.create({
     data: quoteData
+  })
+}
+
+export const createQuizz = async (quizzData: Quizz): Promise<Quizz> => {
+  return prisma.quizz.create({
+    data: quizzData
+  })
+}
+
+export const getQuizzById = async (quizzId: number, userId: number) => {
+  return prisma.quizz.findFirst({
+    where: { contentId: quizzId },
+    include: { 
+      content: true,
+      QuizzAnswer: {
+        where: {
+          userId: userId
+        }
+      }
+    }
   })
 }
 
@@ -51,6 +71,12 @@ export const deleteQuoteById = async (quoteId: number): Promise<Quote> => {
   });
 }
 
+export const deleteQuizzById = async (quizzId: number): Promise<Quizz> => {
+  return prisma.quizz.delete({
+    where: { contentId: quizzId }
+  })
+}
+
 export const getContentList = async (page: number, limit: number) => {
   const skip = (page - 1) * limit;
   
@@ -60,7 +86,13 @@ export const getContentList = async (page: number, limit: number) => {
     include: {
       Article: true,
       Quote: true,
-      Quizz: true
+      Quizz: true,
+      _count: {
+        select: {
+          Like: true,
+          Comment: true
+        }
+      }
     }
   });
 
@@ -72,4 +104,34 @@ export const getContentList = async (page: number, limit: number) => {
     currentPage: page,
     totalPages: Math.ceil(totalContents / limit)
   };
+}
+
+export const giveLikeToContent = async (likeData: Omit<Like, "id">) => {
+  await prisma.like.create({
+    data: likeData
+  });
+}
+
+export const getContentLikesAmount = async (contentId: number) => {
+  const likesAmount = await prisma.like.count({
+    where: { contentId: contentId }
+  })
+
+  return likesAmount;
+}
+
+export const createComment = async (commentData: Omit<Comment, "id">) => {
+  const comment = await prisma.comment.create({
+    data: commentData
+  });
+
+  return comment;
+}
+
+export const answerQuizz = async (answerData: Omit<QuizzAnswer, "id">) => {
+  const answer = await prisma.quizzAnswer.create({
+    data: answerData
+  });
+
+  return answer;
 }

@@ -37,7 +37,7 @@ export const getQuote = async (req: Request, res: Response) => {
     if (error instanceof CustomError) {
       res.status(error.getStatusCode()).json(error.message);
     } else {
-      res.status(500).json({ message: `Erro ao criar citação: ${error}` })
+      res.status(500).json({ message: `Erro ao encontrar a citação: ${error}` })
     }
   }
 }
@@ -48,6 +48,6 @@ export const deleteQuote = async (req: CustomRequest, res: Response) => {
     
     res.status(204).send();
   } catch (error: any) {
-    res.status(500).json({ message: `Erro ao deletar artigo: ${error}` })
+    res.status(500).json({ message: `Erro ao deletar a citação: ${error}` })
   }
 }

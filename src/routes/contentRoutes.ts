@@ -1,19 +1,27 @@
 import express, { Router } from 'express';
 import { createArticle, deleteArticle, getArticle } from '../controllers/articleController';
 import { createQuote, getQuote, deleteQuote } from '../controllers/quoteController';
-import { isAuthenticated } from './middlewares/auth';
-import { getContentList } from '../controllers/contentController';
+import { answerQuizz, createQuizz, deleteQuizz, getQuizz } from '../controllers/quizzController';
+import { createComment, getContentList, likeContent } from '../controllers/contentController';
+import { isAuthenticated, isAuthenticatedAsEducator } from './middlewares/auth';
 
 const contentRouter: Router = express.Router();
 
-contentRouter.post('/article', isAuthenticated, createArticle);
+contentRouter.post('/article', isAuthenticatedAsEducator, createArticle);
 contentRouter.get('/article/:id', isAuthenticated, getArticle);
-contentRouter.delete('/article/:id', isAuthenticated, deleteArticle);
+contentRouter.delete('/article/:id', isAuthenticatedAsEducator, deleteArticle);
 
-contentRouter.post('/quote', isAuthenticated, createQuote);
+contentRouter.post('/quote', isAuthenticatedAsEducator, createQuote);
 contentRouter.get('/quote/:id', isAuthenticated, getQuote);
-contentRouter.delete('/quote/:id', isAuthenticated, deleteQuote)
+contentRouter.delete('/quote/:id', isAuthenticatedAsEducator, deleteQuote);
+
+contentRouter.post('/quizz', isAuthenticatedAsEducator, createQuizz);
+contentRouter.get('/quizz/:id', isAuthenticated, getQuizz);
+contentRouter.delete('/quizz/:id', isAuthenticatedAsEducator, deleteQuizz);
+contentRouter.post('/quizz/answer', isAuthenticated, answerQuizz);
 
 contentRouter.get('/contents/:page/:limit', isAuthenticated, getContentList);
+contentRouter.post('/contents/:id/like', isAuthenticated, likeContent);
+contentRouter.post('/contents/comment', isAuthenticated, createComment);
 
 export default contentRouter;

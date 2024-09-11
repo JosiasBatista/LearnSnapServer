@@ -18,3 +18,21 @@ export interface QuoteRequest {
   quoteAuthor: string,
   userId: number
 }
+
+export interface QuizzRequest {
+  question: string,
+  option1: string,
+  option2: string,
+  option3: string,
+  correctAnswer: string
+}
+
+export interface CommentRequest {
+  contentId: number,
+  value: string
+}
+
+export interface AnswerRequest {
+  quizzOption: string,
+  quizzId: number
+}
