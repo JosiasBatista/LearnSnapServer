@@ -5,8 +5,7 @@
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 generator client {
-  provider = "prisma-client-js",
-  previewFeatures = ["filteredRelationCount"]
+  provider = "prisma-client-js"
 }
 
 datasource db {
@@ -55,8 +54,8 @@ model Content {
   createdAt DateTime @default(now())
 
   article Article?
-  quote Quote?
-  quizz Quizz?
+  quote   Quote?
+  quizz   Quizz?
 
   Like Like[]
 

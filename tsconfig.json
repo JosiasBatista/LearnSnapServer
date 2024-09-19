@@ -10,7 +10,9 @@
     },
     "include": [
       "./**/*.ts",
-      "./*.ts"
+      "./*.ts",
+      "./*.spec.ts",
+      "./**/*.spec.ts"
     ],
     "exclude": [
       "dist",

@@ -84,9 +84,9 @@ export const getContentList = async (page: number, limit: number) => {
     skip: skip,
     take: limit,
     include: {
-      Article: true,
-      Quote: true,
-      Quizz: true,
+      article: true,
+      quote: true,
+      quizz: true,
       _count: {
         select: {
           Like: true,

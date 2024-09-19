@@ -65,13 +65,14 @@ export const answerQuizz = async (answerReq: AnswerRequest, payload: JwtPayload)
     }
 
     const quizz = await contentModel.getQuizzById(answerReq.quizzId, payload.userId);
+
     if (!quizz) {
       throw new CustomError("Quizz não encontrado na base com id: " + answerReq.quizzId, 404);
     }
-    if (quizz.QuizzAnswer) {
+    if (quizz?.QuizzAnswer.length > 0) {
       throw new CustomError("Não é possível responder mais de uma vez", 400);
     }
-
+    
     const isAnswerCorrect = quizz.correctAswer === answerReq.quizzOption;
 
     const quizzAnswer: Omit<QuizzAnswer, "id"> = {
@@ -82,7 +83,11 @@ export const answerQuizz = async (answerReq: AnswerRequest, payload: JwtPayload)
 
     return contentModel.answerQuizz(quizzAnswer);
   } catch (error) {
-    throw new CustomError("Erro ao responder quizz", 500);
+    if (error instanceof CustomError) {
+      throw error;
+    } else {
+      throw new CustomError("Erro ao responder quizz", 500);
+    }
   }
 }
 

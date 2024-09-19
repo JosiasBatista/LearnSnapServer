@@ -56,7 +56,7 @@ export const answerQuizz = async (req: CustomRequest, res: Response) => {
     if (error instanceof CustomError) {
       res.status(error.getStatusCode()).json(error.message);
     } else {
-      res.status(500).json({ message: `Erro ao criar o quizz: ${error}` })
+      res.status(500).json({ message: `Erro ao responder o quizz: ${error}` })
     }
   }
 }
