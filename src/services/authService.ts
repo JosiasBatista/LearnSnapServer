@@ -20,7 +20,6 @@ export const findRefreshTokenById = (id: string) => {
     return findTokenById(id);
 }
 
-// soft delete tokens after usage.
 export const deleteRefreshToken = (id: string) => {
   return deleteTokenById(id);
 }
@@ -36,18 +35,18 @@ export const validateUserPasswordToLogin = async (password: string, user: User) 
 
 export const authenticateUser = async (requestBody: LoginReq) => {
   if (!validateUserAuthReq(requestBody, true)) {
-    throw new Error(JSON.stringify({ status: 400, message: "Informações incompletas"}));
+    throw new CustomError("Informações incompletas", 400);
   }
 
   const user: User | null = await userService.findUserByEmail(requestBody.email);
   if (!user) {
-    throw new Error(JSON.stringify({ status: 400, message: 'Usuário não existente na base' }));
+    throw new CustomError('Usuário não existente na base', 400);
   }
 
   console.log("LOGIN || Usuário encontrado")
   const validatedPassword = await validateUserPasswordToLogin(requestBody.password, user);
   if (!validatedPassword) {
-    throw new Error(JSON.stringify({ status: 400, message: 'Informações de login inválidas' }));
+    throw new CustomError('Informações de login inválidas', 400);
   }
 
   console.log("LOGIN || Senha validada")
@@ -55,7 +54,7 @@ export const authenticateUser = async (requestBody: LoginReq) => {
   const { accessToken, refreshToken } = generateTokens(user, jti);
 
   if (!accessToken || !refreshToken) {
-    throw new Error(JSON.stringify({ status: 500, message: 'Erro ao realizar autenticação' }));
+    throw new CustomError('Erro ao realizar autenticação', 500);
   }
   
   console.log("LOGIN || Tokens gerados")

@@ -2,7 +2,6 @@ import assert from "assert";
 import { CustomError } from "../../exceptions/CustomError";
 import * as contentModel from "../../models/contentModel";
 import * as quizzService from "../../services/quizzService";
-import { Quizz } from "@prisma/client";
 
 jest.mock('../../models/contentModel');
 

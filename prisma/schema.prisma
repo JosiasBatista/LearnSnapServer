@@ -45,7 +45,7 @@ model Area {
   description String
 
   areasOfInterest AreasOfInterest[]
-  content Content?
+  content         Content[]
 }
 
 model Content {
@@ -54,14 +54,14 @@ model Content {
   author    User     @relation(fields: [authorId], references: [id])
   createdAt DateTime @default(now())
 
-  areaId    Int
-  area      Area     @relation(fields: [areaId], references: [id])
+  areaId Int
+  area   Area @relation(fields: [areaId], references: [id])
 
   article Article?
   quote   Quote?
   quizz   Quizz?
 
-  Like Like[]
+  Like    Like[]
   Comment Comment[]
 }
 
