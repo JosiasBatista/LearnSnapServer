@@ -104,11 +104,136 @@ paths:
                     type: string
                     format: message
                     example: 'Erro ao realizar login: Detalhamento do erro'
+  /quote:
+    post:
+      tags:
+        - Quote
+      operationId: createQuote
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/createQuote'
+      responses:
+        '201':
+          description: response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/quoteContent'
+        '400':
+          description: Incorrect informations
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    format: message
+                    example: 'Dados incorretos na criação'
+        '500':
+          description: Internal error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    format: message
+                    example: 'Erro ao criar citação'
+  /quote/:id:
+    get:
+      tags:
+        - Quote
+      operationId: getQuote
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: query
+          name: quoteId
+          schema:
+            type: integer
+          required: true
+          description: Id da citação buscada
+      responses:
+        '200':
+          description: response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/quoteContent'
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    format: message
+                    example: 'Citação não encontrada na base'
+        '500':
+          description: Internal error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    format: message
+                    example: 'Erro ao buscar citação: Detalhes do erro'
+    delete:
+      tags:
+        - Quote
+      operationId: deleteQuote
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: query
+          name: quoteId
+          schema:
+            type: integer
+          required: true
+          description: Id da citação para deletar
+      responses:
+        '204':
+          description: No content
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    format: message
+                    example: 'Citação não encontrada na base'
+        '500':
+          description: Internal error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    format: message
+                    example: 'Erro ao deletar citação: Detalhes do erro'
   /article:
     post:
       tags:
         - Article
       operationId: createArticle
+      security:
+        - bearerAuth: []
       requestBody:
         required: true
         content:
@@ -162,6 +287,8 @@ paths:
       tags:
         - Article
       operationId: getArticle
+      security:
+        - bearerAuth: []
       parameters:
         - in: query
           name: articleId
@@ -215,6 +342,8 @@ paths:
       tags:
         - Article
       operationId: deleteArticle
+      security:
+        - bearerAuth: []
       parameters:
         - in: query
           name: articleId
@@ -247,9 +376,216 @@ paths:
                     type: string
                     format: message
                     example: 'Erro ao deletar artigo: Detalhes do erro'
+  /quizz:
+    post:
+      tags:
+        - Quizz
+      operationId: createQuizz
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/createQuizz'
+      responses:
+        '201':
+          description: response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/quizzContent'
+        '400':
+          description: Incorrect informations
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    format: message
+                    example: 'Dados incorretos na criação'
+        '500':
+          description: Internal error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    format: message
+                    example: 'Erro ao criar quizz'
+  /quizz/:id:
+    get:
+      tags:
+        - Quizz
+      operationId: getQuizz
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: query
+          name: quizzId
+          schema:
+            type: integer
+          required: true
+          description: Id do quizz buscado
+      responses:
+        '200':
+          description: response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/quizzContent'
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    format: message
+                    example: 'Quizz não encontrado na base'
+        '500':
+          description: Internal error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    format: message
+                    example: 'Erro ao buscar artigo: Detalhes do erro'
+    delete:
+      tags:
+        - Quizz
+      operationId: deleteQuizz
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: query
+          name: quizzId
+          schema:
+            type: integer
+          required: true
+          description: Id do quizz para deletar
+      responses:
+        '204':
+          description: No content
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    format: message
+                    example: 'Quizz não encontrado na base'
+        '500':
+          description: Internal error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    format: message
+                    example: 'Erro ao deletar quizz: Detalhes do erro'
                     
 components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
   schemas:
+    createQuizz:
+      type: object
+      properties:
+        question:
+          type: string
+          format: string
+          example: "Pergunta do quiz"
+        option1:
+          type: string
+          format: string
+          example: "Opção 1 de resposta para o quiz"
+        option2:
+          type: string
+          format: string
+          example: "Opção 2 de resposta para o quiz"
+        option3:
+          type: string
+          format: string
+          example: "Opção 3 de resposta para o quiz"
+        correctAnswer:
+          type: string
+          format: string
+          example: "Opção 3 de resposta para o quiz"
+    quizzContent:
+      type: object
+      properties:
+        contentId:
+          type: number
+          format: number
+          example: 1
+        question:
+          type: string
+          format: string
+          example: "Pergunta do quiz"
+        options:
+          type: array
+          items:
+            type: string
+            format: string
+            example: "Opção de resposta ao quiz"
+        QuizzAnswer:
+          type: object
+          properties:
+            isCorrect:
+              type: boolean
+              format: boolean
+              example: true
+            userId:
+              type: number
+              example: 1
+            quizzId:
+              type: number
+              example: 1
+    quoteContent:
+      type: object
+      properties:
+        contentId:
+          type: number
+          format: number
+          example: 1
+        description:
+          type: string
+          format: string
+          example: 'Texto da citação'
+        quoteAuthor:
+          type: string
+          format: string
+          example: 'Nome do autor'
+    createQuote:
+      type: object
+      properties:
+        description:
+          type: string
+          format: string
+          example: 'Texto da citação'
+        quoteAuthor:
+          type: string
+          format: string
+          example: 'Augusto Cury'
     createArticle:
       type: object
       properties:
