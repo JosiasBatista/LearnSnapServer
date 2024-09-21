@@ -5,11 +5,12 @@ Plataforma de micro-conteúdos  educacionais onde usuários podem compartilhar, 
 - Quizzes
 - Artigos breves
 - Citações educativas
-- Imagens educativas
 
 ## Planejamento Inicial de Rotas
 ### Artigos breves
 - POST: /article (Body de criação)
 - GET: /article/:id
-- PATCH: /article/:id (Body de update)
 - DELETE: /article/:id
+
+## Documentação Atualizada de Rotas
+  [Rotas desenvolvidas](https://app.swaggerhub.com/apis/JOSIASLEAL/LearnSnap/1.0.0)
