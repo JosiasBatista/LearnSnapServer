@@ -12,10 +12,10 @@ export const createQuizz = async (request: QuizzRequest, payload: JwtPayload) =>
     throw new CustomError("Informações insuficientes para criação de quiz", 400)
   }
 
-
   const contentReq: Omit<Content, "id"> = {
     authorId: payload.userId,
-    createdAt: new Date()
+    createdAt: new Date(),
+    areaId: request.areaId,
   }
   const content = await contentModel.createContent(contentReq);
 
@@ -37,6 +37,11 @@ export const createQuizz = async (request: QuizzRequest, payload: JwtPayload) =>
 
 export const getQuizz = async (quizzId: number, payload: JwtPayload) => {
   const quizz: Quizz | null = await contentModel.getQuizzById(quizzId, payload.userId);
+
+  if (quizz) {
+    const quizzResponse: any = {...quizz};
+    delete quizzResponse.correctAswer
+  }
 
   return quizz;
 }
@@ -78,7 +83,8 @@ export const answerQuizz = async (answerReq: AnswerRequest, payload: JwtPayload)
     const quizzAnswer: Omit<QuizzAnswer, "id"> = {
       isCorrect: isAnswerCorrect,
       quizzId: answerReq.quizzId,
-      userId: payload.userId
+      userId: payload.userId,
+      answer: answerReq.quizzOption
     }
 
     return contentModel.answerQuizz(quizzAnswer);

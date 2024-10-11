@@ -57,12 +57,13 @@ export const authenticateUser = async (requestBody: LoginReq) => {
     throw new CustomError('Erro ao realizar autenticação', 500);
   }
   
-  console.log("LOGIN || Tokens gerados")
+  console.log("LOGIN || Tokens gerados para o usuário: " + user.id)
   await addRefreshTokenToWhiteList({ jti, refreshToken, userId: user.id})
 
   return {
     accessToken,
-    refreshToken
+    refreshToken,
+    userId: user.id
   }
 }
 

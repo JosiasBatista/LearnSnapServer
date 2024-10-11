@@ -2,7 +2,7 @@ import express, { Router } from 'express';
 import { createArticle, deleteArticle, getArticle } from '../controllers/articleController';
 import { createQuote, getQuote, deleteQuote } from '../controllers/quoteController';
 import { answerQuizz, createQuizz, deleteQuizz, getQuizz } from '../controllers/quizzController';
-import { createComment, getContentList, likeContent } from '../controllers/contentController';
+import { createComment, getCommentsFromContent, getContentList, likeContent, unlikeContent } from '../controllers/contentController';
 import { isAuthenticated, isAuthenticatedAsEducator } from './middlewares/auth';
 
 const contentRouter: Router = express.Router();
@@ -22,6 +22,8 @@ contentRouter.post('/quizz/answer', isAuthenticated, answerQuizz);
 
 contentRouter.get('/contents/:page/:limit', isAuthenticated, getContentList);
 contentRouter.post('/contents/:id/like', isAuthenticated, likeContent);
+contentRouter.post('/contents/:id/unlike', isAuthenticated, unlikeContent);
 contentRouter.post('/contents/comment', isAuthenticated, createComment);
+contentRouter.get('/comments/content/:id', isAuthenticated, getCommentsFromContent)
 
 export default contentRouter;

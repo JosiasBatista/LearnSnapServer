@@ -10,13 +10,15 @@ export interface Article {
 export interface ArticleRequest {
   title: string,
   article: string,
-  educatorId: number
+  educatorId: number,
+  areaId: number
 }
 
 export interface QuoteRequest {
   description: string,
   quoteAuthor: string,
-  userId: number
+  userId: number,
+  areaId: number
 }
 
 export interface QuizzRequest {
@@ -24,7 +26,8 @@ export interface QuizzRequest {
   option1: string,
   option2: string,
   option3: string,
-  correctAnswer: string
+  correctAnswer: string,
+  areaId: number
 }
 
 export interface CommentRequest {

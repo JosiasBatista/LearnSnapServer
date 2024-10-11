@@ -96,6 +96,7 @@ model QuizzAnswer {
   user      User    @relation(fields: [userId], references: [id])
   quizzId   Int
   quizz     Quizz   @relation(fields: [quizzId], references: [contentId])
+  answer    String  @default("")
 }
 
 model Like {

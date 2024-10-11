@@ -35,7 +35,17 @@ export const getQuizzById = async (quizzId: number, userId: number) => {
   return prisma.quizz.findFirst({
     where: { contentId: quizzId },
     include: { 
-      content: true,
+      content: {
+        include: {
+          author: true,
+          _count: {
+            select: {
+              Like: true,
+              Comment: true
+            }
+          }
+        }
+      },
       QuizzAnswer: {
         where: {
           userId: userId
@@ -48,14 +58,38 @@ export const getQuizzById = async (quizzId: number, userId: number) => {
 export const getQuoteById = async (quoteId: number) => {
   return prisma.quote.findFirst({
     where: { contentId: quoteId },
-    include: { content: true }
+    include: { 
+      content: {
+        include: {
+          author: true,
+          _count: {
+            select: {
+              Like: true,
+              Comment: true
+            }
+          }
+        }
+      },
+    }
   })
 }
 
 export const getArticleById = async (articleId: number) => {
   return prisma.article.findFirst({
     where: { contentId: articleId },
-    include: { content: true }
+    include: { 
+      content: {
+        include: {
+          author: true,
+          _count: {
+            select: {
+              Like: true,
+              Comment: true
+            }
+          }
+        }
+      },
+    }
   })
 }
 
@@ -77,7 +111,7 @@ export const deleteQuizzById = async (quizzId: number): Promise<Quizz> => {
   })
 }
 
-export const getContentList = async (page: number, limit: number) => {
+export const getContentList = async (page: number, limit: number, userId: number) => {
   const skip = (page - 1) * limit;
   
   const contents = await prisma.content.findMany({
@@ -86,13 +120,33 @@ export const getContentList = async (page: number, limit: number) => {
     include: {
       article: true,
       quote: true,
-      quizz: true,
+      quizz: {
+        select: {
+          contentId: true,
+          options: true,
+          question: true,
+          QuizzAnswer: {
+            where: {
+              userId: userId
+            }
+          }
+        }
+      },
+      author: true,
       _count: {
         select: {
           Like: true,
           Comment: true
         }
-      }
+      },
+      Like: {
+        where: {
+          userId: userId,
+        },
+        select: {
+          id: true,
+        },
+      },
     }
   });
 
@@ -107,8 +161,16 @@ export const getContentList = async (page: number, limit: number) => {
 }
 
 export const giveLikeToContent = async (likeData: Omit<Like, "id">) => {
-  await prisma.like.create({
+  return await prisma.like.create({
     data: likeData
+  });
+}
+
+export const getLikeById = async (likeId: number) => {
+  return await prisma.like.findFirst({
+    where: {
+      id: likeId
+    }
   });
 }
 
@@ -118,6 +180,14 @@ export const getContentLikesAmount = async (contentId: number) => {
   })
 
   return likesAmount;
+}
+
+export const removeLikeFromContent = async (likeId: number) => {
+  await prisma.like.delete({
+    where: { id: likeId }
+  })
+
+  return;
 }
 
 export const createComment = async (commentData: Omit<Comment, "id">) => {
@@ -134,4 +204,15 @@ export const answerQuizz = async (answerData: Omit<QuizzAnswer, "id">) => {
   });
 
   return answer;
+}
+
+export const getCommentsFromContent = async (contentId: number) => {
+  return await prisma.comment.findMany({
+    where: {
+      contentId: contentId
+    },
+    include: {
+      user: true
+    }
+  })
 }

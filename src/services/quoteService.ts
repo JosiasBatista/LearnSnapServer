@@ -15,7 +15,8 @@ export const createQuote = async (request: QuoteRequest, payload: JwtPayload) =>
 
   const contentReq: Omit<Content, "id"> = {
     authorId: payload.userId,
-    createdAt: new Date()
+    createdAt: new Date(),
+    areaId: request.areaId
   }
   const content = await contentModel.createContent(contentReq);
 
