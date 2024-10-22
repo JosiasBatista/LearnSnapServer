@@ -17,7 +17,7 @@ export const createArticle = async (req: CustomRequest, res: Response) => {
     res.status(201).json(article);
   } catch (error: unknown) {
     if (error instanceof CustomError) {
-      res.status(error.getStatusCode()).json(error.message);
+      res.status(error.getStatusCode()).json({ message: error.message });;
     } else {
       res.status(500).json({ message: `Erro ao criar artigo: ${error}` })
     }

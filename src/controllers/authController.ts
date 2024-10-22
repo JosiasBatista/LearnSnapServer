@@ -30,12 +30,11 @@ export const login = async (req: Request, res: Response) => {
       refreshToken,
       userId
     })
-  } catch (error: any) {
-    try {
-      const errorParsed = JSON.parse(error);
-      res.status(errorParsed.status).json(errorParsed.message);
-    } catch (e) {
-      res.status(500).json({ message: 'Erro ao realizar login: ', e })
+  } catch (error: unknown) {
+    if (error instanceof CustomError) {
+      res.status(error.getStatusCode()).json({ message: error.message });
+    } else {
+      res.status(500).json({ message: `Erro ao realizar login: ${error}` })
     }
   }
 }
@@ -50,7 +49,7 @@ export const refreshToken = async (req: Request, res: Response) => {
     })
   } catch (error: unknown) {
     if (error instanceof CustomError) {
-      res.status(error.getStatusCode()).json(error.message);
+      res.status(error.getStatusCode()).json({ message: error.message });;
     } else {
       res.status(500).json({ message: `Erro ao atualizar token: ${error}` })
     }

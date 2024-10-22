@@ -16,7 +16,7 @@ export const createQuizz = async (req: CustomRequest, res: Response) => {
     return res.status(201).json(quizz);
   } catch (error: unknown) {
     if (error instanceof CustomError) {
-      res.status(error.getStatusCode()).json(error.message);
+      res.status(error.getStatusCode()).json({ message: error.message });;
     } else {
       res.status(500).json({ message: `Erro ao criar o quizz: ${error}` })
     }
@@ -54,7 +54,7 @@ export const answerQuizz = async (req: CustomRequest, res: Response) => {
     res.status(200).send(answerResult)
   } catch (error: unknown) {
     if (error instanceof CustomError) {
-      res.status(error.getStatusCode()).json(error.message);
+      res.status(error.getStatusCode()).json({ message: error.message });;
     } else {
       res.status(500).json({ message: `Erro ao responder o quizz: ${error}` })
     }

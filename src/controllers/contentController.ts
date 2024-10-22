@@ -37,7 +37,7 @@ export const unlikeContent = async (req: CustomRequest, res: Response) => {
     res.status(201).json(likeAmount);
   } catch (error: unknown) {
     if (error instanceof CustomError) {
-      res.status(error.getStatusCode()).json(error.message);
+      res.status(error.getStatusCode()).json({ message: error.message });;
     } else {
       res.status(500).json({ message: 'Erro ao remover like' })
     }

@@ -17,7 +17,7 @@ export const createQuote = async (req: CustomRequest, res: Response) => {
     res.status(201).json(quote);
   } catch (error: unknown) {
     if (error instanceof CustomError) {
-      res.status(error.getStatusCode()).json(error.message);
+      res.status(error.getStatusCode()).json({ message: error.message });;
     } else {
       res.status(500).json({ message: `Erro ao criar citação: ${error}` })
     }
@@ -35,7 +35,7 @@ export const getQuote = async (req: Request, res: Response) => {
     res.status(200).json(quote);
   } catch (error: unknown) {
     if (error instanceof CustomError) {
-      res.status(error.getStatusCode()).json(error.message);
+      res.status(error.getStatusCode()).json({ message: error.message });;
     } else {
       res.status(500).json({ message: `Erro ao encontrar a citação: ${error}` })
     }
