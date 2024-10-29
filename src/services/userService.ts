@@ -34,6 +34,6 @@ export const findUserByEmail = async (email: string): Promise<User | null> => {
   return userModel.findUserByEmail(email);
 }
 
-export const findUserById = async (id: number): Promise<User | null> => {
+export const findUserById = async (id: number) => {
   return userModel.findUserById(id);
 }

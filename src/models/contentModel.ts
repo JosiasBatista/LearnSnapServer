@@ -111,12 +111,17 @@ export const deleteQuizzById = async (quizzId: number): Promise<Quizz> => {
   })
 }
 
-export const getContentList = async (page: number, limit: number, userId: number) => {
+export const getContentList = async (page: number, limit: number, userId: number, areasIds: number[]) => {
   const skip = (page - 1) * limit;
   
   const contents = await prisma.content.findMany({
     skip: skip,
     take: limit,
+    where: {
+      areaId: {
+        in: areasIds?.length > 0 ? areasIds : undefined
+      }
+    },
     include: {
       article: true,
       quote: true,
@@ -147,7 +152,10 @@ export const getContentList = async (page: number, limit: number, userId: number
           id: true,
         },
       },
-    }
+    },
+    orderBy: [{
+      createdAt: 'desc'
+    }],
   });
 
   const totalContents = await prisma.content.count();

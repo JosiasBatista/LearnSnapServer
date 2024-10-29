@@ -4,6 +4,7 @@ import cors from 'cors';
 import authRouter from './routes/authRoutes';
 import contentRouter from './routes/contentRoutes';
 import areaRouter from './routes/areaRoutes';
+import contentScheduler from './schedule/index';
 
 const app = express();
 const port = 3000;
@@ -25,6 +26,8 @@ app.use(express.json());
 app.use("/", authRouter);
 app.use("/api", contentRouter);
 app.use("/api", areaRouter);
+
+contentScheduler;
 
 app.listen(port, () => {
   console.log(`Servidor rodando em http://localhost:${port}`)

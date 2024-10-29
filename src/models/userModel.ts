@@ -13,8 +13,11 @@ export const findUserByEmail = async (email: string): Promise<User | null> => {
   });
 };
 
-export const findUserById = async (id: number): Promise<User | null> => {
+export const findUserById = async (id: number) => {
   return prisma.user.findUnique({
     where: { id },
+    include: {
+      areasOfInterest: true,
+    }
   });
 }

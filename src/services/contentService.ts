@@ -2,12 +2,17 @@ import { JwtPayload } from "jsonwebtoken";
 import { CustomError } from "../exceptions/CustomError";
 import * as contentModel from "../models/contentModel";
 import * as aiService from "./aiService";
+import { findUserById } from "./userService";
 import { Comment, Like } from "@prisma/client";
 import { CommentRequest } from "../interfaces/content";
+import { getAreaByNameOrCreate } from "./areaService";
 
 export const getContents = async (page: number, limit: number, payload: JwtPayload) => {
+  const user = await findUserById(payload.userId);
+  const areasOfInterest = user?.areasOfInterest.map(area => area.areaId);
+
   try {
-    const contents = await contentModel.getContentList(page, limit, payload.userId);
+    const contents = await contentModel.getContentList(page, limit, payload.userId, areasOfInterest || []);
     return contents;
   } catch (error) {
     throw new CustomError(`${error}`, 500);
@@ -71,8 +76,11 @@ export const getCommentsFromContent = async (contentId: number) => {
 
 export const automaticallyCreateContent = async (capturedLists: { Posts: any[] } | null, searchText: string) => {
   if (capturedLists?.Posts) {
+    const areaSaved = await getAreaByNameOrCreate(
+      String(searchText).charAt(0).toUpperCase() + String(searchText).slice(1));
+
     capturedLists.Posts.forEach(async (post) => {
-      await aiService.createContentBasedOnLink(post.Link, searchText);
+      await aiService.createContentBasedOnLink(post.Link, areaSaved);
     })
   }
 }

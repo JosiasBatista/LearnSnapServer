@@ -9,7 +9,6 @@ export const getAreaByNameOrCreate = async (name: string) => {
   const area = await areaModel.getAreaByName(name);
 
   if (area) return area;
-  
 
   const areaData: Omit<Area, "id"> = {
     description: name

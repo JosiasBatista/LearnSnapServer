@@ -39,7 +39,7 @@ export const runRobotTask = async (robotId: string, inputParameters: any) => {
       reject(error)
     })
   
-    req.write(JSON.stringify(inputParameters));
+    req.write(JSON.stringify({inputParameters}));
     req.end();
   })
 }

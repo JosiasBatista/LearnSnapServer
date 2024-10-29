@@ -2,21 +2,16 @@ import Groq from "groq-sdk";
 import { createAiArticle } from "./articleService";
 import { createAiQuizz } from "./quizzService";
 import { createAiQuote } from "./quoteService";
-import { getAreaByNameOrCreate } from "./areaService";
+import { Area } from "@prisma/client";
 
 const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
 
-export const createContentBasedOnLink = async (link: string, searchText: string) => {
+export const createContentBasedOnLink = async (link: string, areaSaved: Area) => {
   const chatCompletion = await getGroqChatCompletion(link);
-  // Print the completion returned by the LLM.
   const aiChatResponse = chatCompletion.choices[0]?.message?.content ?? "";
 
-  console.log(aiChatResponse)
   if (aiChatResponse) {
     const parsedResponse = JSON.parse(aiChatResponse);
-
-    const areaSaved = await getAreaByNameOrCreate(
-      String(searchText).charAt(0).toUpperCase() + String(searchText).slice(1));
 
     const contentCreationCalls = [];
     parsedResponse.article && contentCreationCalls.push(
