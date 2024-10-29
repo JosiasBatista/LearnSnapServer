@@ -1,6 +1,7 @@
 import { JwtPayload } from "jsonwebtoken";
 import { CustomError } from "../exceptions/CustomError";
 import * as contentModel from "../models/contentModel";
+import * as aiService from "./aiService";
 import { Comment, Like } from "@prisma/client";
 import { CommentRequest } from "../interfaces/content";
 
@@ -66,4 +67,12 @@ export const createComment = async (request: CommentRequest, payload: JwtPayload
 
 export const getCommentsFromContent = async (contentId: number) => {
   return contentModel.getCommentsFromContent(contentId);
+}
+
+export const automaticallyCreateContent = async (capturedLists: { Posts: any[] } | null, searchText: string) => {
+  if (capturedLists?.Posts) {
+    capturedLists.Posts.forEach(async (post) => {
+      await aiService.createContentBasedOnLink(post.Link, searchText);
+    })
+  }
 }

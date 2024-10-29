@@ -1,10 +1,19 @@
 import { Content, Quote, User } from "@prisma/client";
 
-import { QuoteRequest } from "../interfaces/content";
+import { QuoteAiRequest, QuoteRequest } from "../interfaces/content";
 import * as userService from "./userService";
 import * as contentModel from "../models/contentModel";
 import { CustomError } from "../exceptions/CustomError";
 import { JwtPayload } from "jsonwebtoken";
+
+export const createAiQuote = async (request: QuoteAiRequest) => {
+  const requestData: QuoteRequest = {
+    ...request,
+    userId: 0
+  }
+
+  createQuote(requestData, { userId: 0 });
+}
 
 export const createQuote = async (request: QuoteRequest, payload: JwtPayload) => {
   const isReqValid = await validateQuoteRequest(request, payload.userId);

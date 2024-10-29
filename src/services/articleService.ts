@@ -1,9 +1,20 @@
 import { Article, Content } from "@prisma/client";
-import { ArticleRequest } from "../interfaces/content";
+import { ArticleAiRequest, ArticleRequest } from "../interfaces/content";
 import * as userService from "./userService";
 import * as contentModel from "../models/contentModel";
 import { CustomError } from "../exceptions/CustomError";
 import { JwtPayload } from "jsonwebtoken";
+
+export const createAiArticle = async ({ title, description, link, areaId }: ArticleAiRequest) => {
+  const request: ArticleRequest = {
+    article: description + `\n\nCreated by AI based on: ${link}`,
+    title: title,
+    educatorId: 0,
+    areaId
+  }
+
+  createArticle(request, { userId: 0 });
+}
 
 export const createArticle = async (request: ArticleRequest, payload: JwtPayload) => {
   const isReqValid = await validateArticleRequest(request, payload.userId);

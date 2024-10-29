@@ -7,10 +7,23 @@ export interface Article {
   author: Educator
 } 
 
+export interface ArticleAiRequest {
+  title: string,
+  description: string,
+  link: string,
+  areaId: number 
+}
+
 export interface ArticleRequest {
   title: string,
   article: string,
   educatorId: number,
+  areaId: number
+}
+
+export interface QuoteAiRequest {
+  description: string,
+  quoteAuthor: string,
   areaId: number
 }
 

@@ -3,6 +3,7 @@ import { createArticle, deleteArticle, getArticle } from '../controllers/article
 import { createQuote, getQuote, deleteQuote } from '../controllers/quoteController';
 import { answerQuizz, createQuizz, deleteQuizz, getQuizz } from '../controllers/quizzController';
 import { createComment, getCommentsFromContent, getContentList, likeContent, unlikeContent } from '../controllers/contentController';
+import { runRobotTask, robotTaskFinished } from '../controllers/scrappingController';
 import { isAuthenticated, isAuthenticatedAsEducator } from './middlewares/auth';
 
 const contentRouter: Router = express.Router();
@@ -24,6 +25,9 @@ contentRouter.get('/contents/:page/:limit', isAuthenticated, getContentList);
 contentRouter.post('/contents/:id/like', isAuthenticated, likeContent);
 contentRouter.post('/contents/:id/unlike', isAuthenticated, unlikeContent);
 contentRouter.post('/contents/comment', isAuthenticated, createComment);
-contentRouter.get('/comments/content/:id', isAuthenticated, getCommentsFromContent)
+contentRouter.get('/comments/content/:id', isAuthenticated, getCommentsFromContent);
+
+contentRouter.post('/runRobotTask', runRobotTask);
+contentRouter.post('/robotTaskFinished', robotTaskFinished);
 
 export default contentRouter;

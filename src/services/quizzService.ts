@@ -5,6 +5,14 @@ import { AnswerRequest, QuizzRequest } from "../interfaces/content";
 import { CustomError } from "../exceptions/CustomError";
 import * as contentModel from "../models/contentModel";
 
+export const createAiQuizz = async (request: QuizzRequest) => {
+  const requestData: QuizzRequest = {
+    ...request
+  }
+
+  createQuizz(requestData, { userId: 0 });
+}
+
 export const createQuizz = async (request: QuizzRequest, payload: JwtPayload) => {
   const isReqValid = validateRequest(request);
 
@@ -15,7 +23,7 @@ export const createQuizz = async (request: QuizzRequest, payload: JwtPayload) =>
   const contentReq: Omit<Content, "id"> = {
     authorId: payload.userId,
     createdAt: new Date(),
-    areaId: request.areaId,
+    areaId: request.areaId
   }
   const content = await contentModel.createContent(contentReq);
 
