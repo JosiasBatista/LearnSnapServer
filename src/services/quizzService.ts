@@ -10,7 +10,11 @@ export const createAiQuizz = async (request: QuizzRequest) => {
     ...request
   }
 
-  createQuizz(requestData, { userId: 0 });
+  try {
+    createQuizz(requestData, { userId: 0 });
+  } catch {
+    console.log("Error creating quizz with AI")
+  }
 }
 
 export const createQuizz = async (request: QuizzRequest, payload: JwtPayload) => {

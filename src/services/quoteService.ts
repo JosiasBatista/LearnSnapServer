@@ -12,7 +12,11 @@ export const createAiQuote = async (request: QuoteAiRequest) => {
     userId: 0
   }
 
-  createQuote(requestData, { userId: 0 });
+  try {
+    createQuote(requestData, { userId: 0 });
+  } catch {
+    console.log("Error creating quote with AI")
+  }
 }
 
 export const createQuote = async (request: QuoteRequest, payload: JwtPayload) => {

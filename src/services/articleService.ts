@@ -13,7 +13,11 @@ export const createAiArticle = async ({ title, description, link, areaId }: Arti
     areaId
   }
 
-  createArticle(request, { userId: 0 });
+  try {
+    createArticle(request, { userId: 0 });
+  } catch {
+    console.log("Error creating article with AI")
+  }
 }
 
 export const createArticle = async (request: ArticleRequest, payload: JwtPayload) => {
