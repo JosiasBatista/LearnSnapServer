@@ -10,8 +10,10 @@ export const createAiQuizz = async (request: QuizzRequest) => {
     ...request
   }
 
+  console.log("Quizz generated: ", JSON.stringify(requestData))
+
   try {
-    createQuizz(requestData, { userId: 0 });
+    await createQuizz(requestData, { userId: 0 });
   } catch {
     console.log("Error creating quizz with AI")
   }
@@ -113,5 +115,5 @@ const validateRequest = (request: QuizzRequest) => {
   const options = [request.option1, request.option2, request.option3];
 
   return (request.correctAnswer && request.option1 && request.option2 && 
-    request.option3 && request.correctAnswer && options.includes(request.correctAnswer));
+    request.option3 && options.includes(request.correctAnswer));
 }

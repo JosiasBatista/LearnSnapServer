@@ -12,9 +12,11 @@ export const createAiArticle = async ({ title, description, link, areaId }: Arti
     educatorId: 0,
     areaId
   }
+  
+  console.log("Article generated: ", JSON.stringify(request))
 
   try {
-    createArticle(request, { userId: 0 });
+    await createArticle(request, { userId: 0 });
   } catch {
     console.log("Error creating article with AI")
   }

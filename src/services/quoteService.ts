@@ -12,8 +12,10 @@ export const createAiQuote = async (request: QuoteAiRequest) => {
     userId: 0
   }
 
+  console.log("Quote generated: ", JSON.stringify(requestData))
+
   try {
-    createQuote(requestData, { userId: 0 });
+    await createQuote(requestData, { userId: 0 });
   } catch {
     console.log("Error creating quote with AI")
   }
