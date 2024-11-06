@@ -4,7 +4,7 @@ import * as scrapperService from "../services/scrapperService";
 
 const rule = new schedule.RecurrenceRule();
 rule.dayOfWeek = [new schedule.Range(1, 5)];
-rule.hour = 8;
+rule.hour = 17;
 rule.minute = 0;
 
 const contentByDay = [
