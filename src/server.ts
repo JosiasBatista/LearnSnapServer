@@ -10,7 +10,7 @@ import contentScheduler from './schedule/index';
 const app = express();
 const port = 3000;
 const corsOptions = {
-  origin: 'https://learnsnap.vercel.app/',
+  origin: 'https://learnsnap.vercel.app',
   optionsSuccessStatus: 200,
 };
 
