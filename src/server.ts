@@ -3,6 +3,7 @@ import cors from 'cors';
 
 import authRouter from './routes/authRoutes';
 import contentRouter from './routes/contentRoutes';
+import userRouter from './routes/userRoutes';
 import areaRouter from './routes/areaRoutes';
 import contentScheduler from './schedule/index';
 
@@ -26,6 +27,7 @@ app.use(express.json());
 app.use("/", authRouter);
 app.use("/api", contentRouter);
 app.use("/api", areaRouter);
+app.use("/api", userRouter);
 
 contentScheduler;
 

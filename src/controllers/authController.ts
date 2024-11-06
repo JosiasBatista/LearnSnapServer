@@ -5,18 +5,18 @@ import { CustomError } from '../exceptions/CustomError';
 
 export const register = async (req: Request, res: Response) => {
   try {
-    const { accessToken, refreshToken } = await authService.registerUser(req.body);
+    const { accessToken, refreshToken, userId } = await authService.registerUser(req.body);
     
     res.status(201).json({
       accessToken,
-      refreshToken
+      refreshToken,
+      userId
     })
-  } catch (error: any) {
-    try {
-      const errorParsed = JSON.parse(error);
-      res.status(errorParsed.status).json(errorParsed.message);
-    } catch (e) {
-      res.status(500).json({ message: 'Erro ao realizar login: ', e })
+  } catch (error: unknown) {
+    if (error instanceof CustomError) {
+      res.status(error.getStatusCode()).json({ message: error.message });
+    } else {
+      res.status(500).json({ message: `Erro ao realizar registro: ${error}` })
     }
   }
 }

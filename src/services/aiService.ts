@@ -18,7 +18,7 @@ export const createContentBasedOnLink = async (link: string, areaSaved: Area) =>
       () => createAiArticle({...parsedResponse.article, areaId: areaSaved.id, link}));
 
     parsedResponse.quizz && contentCreationCalls.push(
-      () => createAiQuizz({...parsedResponse.quizz, areaId: areaSaved.id}));
+      () => createAiQuizz({...parsedResponse.quizz, areaId: areaSaved.id}, link));
 
     parsedResponse.quote && contentCreationCalls.push(
       () => createAiQuote({...parsedResponse.quote, areaId: areaSaved.id}));

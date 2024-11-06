@@ -10,6 +10,9 @@ import { getAreaByNameOrCreate } from "./areaService";
 export const getContents = async (page: number, limit: number, payload: JwtPayload) => {
   const user = await findUserById(payload.userId);
   const areasOfInterest = user?.areasOfInterest.map(area => area.areaId);
+  if (user?.mainArea?.id) {
+    areasOfInterest?.push(user?.mainArea?.id);
+  }
 
   try {
     const contents = await contentModel.getContentList(page, limit, payload.userId, areasOfInterest || []);

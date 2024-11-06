@@ -27,7 +27,6 @@ contentRouter.post('/contents/:id/unlike', isAuthenticated, unlikeContent);
 contentRouter.post('/contents/comment', isAuthenticated, createComment);
 contentRouter.get('/comments/content/:id', isAuthenticated, getCommentsFromContent);
 
-contentRouter.post('/runRobotTask', runRobotTask);
 contentRouter.post('/robotTaskFinished', robotTaskFinished);
 
 export default contentRouter;

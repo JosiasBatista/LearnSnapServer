@@ -5,9 +5,10 @@ import { AnswerRequest, QuizzRequest } from "../interfaces/content";
 import { CustomError } from "../exceptions/CustomError";
 import * as contentModel from "../models/contentModel";
 
-export const createAiQuizz = async (request: QuizzRequest) => {
+export const createAiQuizz = async (request: QuizzRequest, link?: string) => {
   const requestData: QuizzRequest = {
-    ...request
+    ...request,
+    question: request.question + `\n\nCreated by AI based on: ${link}`
   }
 
   console.log("Quizz generated: ", JSON.stringify(requestData))

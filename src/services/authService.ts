@@ -84,7 +84,8 @@ export const registerUser = async (requestBody: RegisterReq) => {
 
   return {
     accessToken,
-    refreshToken
+    refreshToken,
+    userId: user.id
   }
 }
 

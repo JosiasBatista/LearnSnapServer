@@ -15,3 +15,8 @@ export const getAreaByNameOrCreate = async (name: string) => {
   };
   return areaModel.createArea(areaData);
 }
+
+export const getAreasInNameArray = async (names: string[]) => {
+  const areas = await areaModel.getAreasInNameArray(names);
+  return areas;
+}

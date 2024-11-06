@@ -33,7 +33,7 @@ export const generateRefreshToken = (user: User, jti: string) => {
     }
 }
 
-export const generateTokens = (user: User, jti: string) => {
+export const generateTokens = (user: any, jti: string) => {
     const accessToken = generateAccessToken(user);
     const refreshToken = generateRefreshToken(user, jti);
 

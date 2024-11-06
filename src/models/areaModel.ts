@@ -7,10 +7,20 @@ export const getAreas = async () => {
   return areas;
 }
 
-export const getAreaByName = async (name: string) => {
+export const getAreaByName = async (description: string) => {
   return await prisma.area.findFirst({
     where: {
-      description: name
+      description: description
+    }
+  })
+}
+
+export const getAreasInNameArray = async (descriptions: string[]) => {
+  return await prisma.area.findMany({
+    where: {
+      description: {
+        in: descriptions
+      }
     }
   })
 }

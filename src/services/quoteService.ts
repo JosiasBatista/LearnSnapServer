@@ -72,7 +72,7 @@ export const deleteQuote = async (quoteId: number, payload: JwtPayload) => {
 }
 
 const validateQuoteRequest = async (req: QuoteRequest, userId: number): Promise<boolean> => {
-  const user: User | null = await userService.findUserById(userId);
+  const user = await userService.findUserById(userId);
   
   return !!(req.description && req.quoteAuthor && user !== null);
 }
